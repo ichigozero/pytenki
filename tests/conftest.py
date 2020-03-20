@@ -38,4 +38,4 @@ def pytenki(mock_factory, pwm):
 
 @pytest.fixture
 def pytenki_init(mock_factory, pwm, led_pins):
-    return PyTenki(led_pins)
+    return PyTenki(led_pins=led_pins)
