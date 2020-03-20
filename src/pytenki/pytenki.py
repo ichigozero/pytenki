@@ -8,6 +8,18 @@ class PyTenki:
 
         self.assign_leds(led_pins)
 
+    def _normalize_weather_str(self):
+        try:
+            strings = (('大', ''), ('暴風', ''), ('雷', ''),
+                       ('一時', '時々'), ('雨か雪', '雨'),
+                       ('雪か雨', '雪'))
+
+            for before, after in strings:
+                tmp = self._forecast['weather']
+                self._forecast['weather'] = tmp.replace(before, after)
+        except (AttributeError, TypeError):
+            pass
+
     def assign_leds(self, led_pins):
         try:
             self._close_leds()
