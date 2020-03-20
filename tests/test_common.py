@@ -24,3 +24,9 @@ def test_catched_exceptions_on_normalize_weather_str(pytenki):
     pytenki._forecast = forecast
     pytenki._normalize_weather_str()
     assert pytenki._forecast is forecast
+
+
+def test_function_is_called_during_forecast_var_assignment(mocker, pytenki):
+    spy = mocker.spy(pytenki, '_normalize_weather_str')
+    pytenki.forecast = {'weather': '晴れ'}
+    spy.assert_called_once()

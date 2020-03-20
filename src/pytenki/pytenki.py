@@ -6,7 +6,17 @@ class PyTenki:
         self._forecast = forecast
         self._leds = None
 
+        self._normalize_weather_str()
         self.assign_leds(led_pins)
+
+    @property
+    def forecast(self):
+        return self._forecast
+
+    @forecast.setter
+    def forecast(self, forecast):
+        self._forecast = forecast
+        self._normalize_weather_str()
 
     def _normalize_weather_str(self):
         try:
