@@ -35,13 +35,13 @@ class PyTenki:
             self._close_leds()
 
             self._leds = LEDBoard(
-                fine=led_pins['fine'],
-                cloud=led_pins['cloud'],
-                rain=led_pins['rain'],
-                snow=led_pins['snow'],
+                fine=led_pins.get('fine'),
+                cloud=led_pins.get('cloud'),
+                rain=led_pins.get('rain'),
+                snow=led_pins.get('snow'),
                 pwm=True,
             )
-        except TypeError:
+        except AttributeError:
             pass
 
     def _close_leds(self):
