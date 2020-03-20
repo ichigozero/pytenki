@@ -2,7 +2,8 @@ from gpiozero import LEDBoard
 
 
 class PyTenki:
-    def __init__(self, led_pins=None):
+    def __init__(self, forecast=None, led_pins=None):
+        self._forecast = forecast
         self._leds = None
 
         self.assign_leds(led_pins)
