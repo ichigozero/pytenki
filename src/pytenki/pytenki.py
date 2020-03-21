@@ -1,6 +1,12 @@
 from gpiozero import LEDBoard
 
 
+FCAST_WEATHER = '{day}の{city}の天気は{weather}。'
+FCAST_MAX_TEMP = '予想最高気温は{max_temp}。'
+FCAST_MIN_TEMP = '予想最低気温は{min_temp}。'
+FCAST_SUM_ERR = '天気予報を取得できません。'
+
+
 def _exc_attr_err(func):
     def wrapper(*args, **kwargs):
         try:
@@ -38,6 +44,37 @@ class PyTenki:
                 self._forecast['weather'] = tmp.replace(before, after)
         except (AttributeError, TypeError):
             pass
+
+    def _compose_forecast_summary(self):
+        try:
+            day = self._forecast.get('day')
+            city = self._forecast.get('city')
+            weather = self._forecast.get('weather')
+
+            if all([day, city, weather]):
+                fcast_weather = FCAST_WEATHER.format(
+                    day=day, city=city, weather=weather)
+                fcast_max_temp = ''
+                fcast_min_temp = ''
+
+                temps = self._forecast.get('temp')
+                max_temp = temps.get('max')
+                min_temp = temps.get('min')
+
+                if max_temp:
+                    fcast_max_temp = FCAST_MAX_TEMP.format(
+                        max_temp=max_temp)
+
+                if min_temp:
+                    fcast_min_temp = FCAST_MIN_TEMP.format(
+                        min_temp=min_temp)
+
+                return ''.join([fcast_weather, fcast_max_temp,
+                                fcast_min_temp])
+        except AttributeError:
+            pass
+
+        return FCAST_SUM_ERR
 
     @_exc_attr_err
     def assign_leds(self, led_pins):
