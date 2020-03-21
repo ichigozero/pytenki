@@ -31,11 +31,16 @@ def led_pins():
     }
 
 
+@pytest.fixture(scope='module')
+def button_pin():
+    return 2
+
+
 @pytest.fixture
 def pytenki(mock_factory, pwm):
     return PyTenki()
 
 
 @pytest.fixture
-def pytenki_init(mock_factory, pwm, led_pins):
-    return PyTenki(led_pins=led_pins)
+def pytenki_init(mock_factory, pwm, led_pins, button_pin):
+    return PyTenki(led_pins=led_pins, button_pin=button_pin)
