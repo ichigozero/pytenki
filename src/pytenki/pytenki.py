@@ -151,7 +151,7 @@ class PyTenki:
     @_exc_attr_err
     def _operate_fine_led(self, on_time=1, off_time=1,
                           fade_in_time=1, fade_out_time=1):
-        weather = self.forecast.get('weather')
+        weather = self._forecast.get('weather')
 
         if weather.startswith('晴'):
             self._leds.fine.on()
@@ -165,7 +165,7 @@ class PyTenki:
     @_exc_attr_err
     def _operate_cloud_led(self, on_time=1, off_time=1,
                            fade_in_time=1, fade_out_time=1):
-        weather = self.forecast.get('weather')
+        weather = self._forecast.get('weather')
 
         if weather.startswith('曇'):
             self._leds.cloud.on()
@@ -179,7 +179,7 @@ class PyTenki:
     @_exc_attr_err
     def _operate_rain_led(self, on_time=1, off_time=1,
                           fade_in_time=1, fade_out_time=1):
-        weather = self.forecast.get('weather')
+        weather = self._forecast.get('weather')
 
         if weather.startswith('雨'):
             self._leds.rain.on()
@@ -193,7 +193,7 @@ class PyTenki:
     @_exc_attr_err
     def _operate_snow_led(self, on_time=1, off_time=1,
                           fade_in_time=1, fade_out_time=1):
-        weather = self.forecast.get('weather')
+        weather = self._forecast.get('weather')
 
         if weather.startswith('雪'):
             self._leds.snow.on()
