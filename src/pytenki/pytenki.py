@@ -55,6 +55,12 @@ class PyTenki:
     def _close_leds(self):
         self._leds.close()
 
+    def operate_all_weather_leds(self):
+        self._operate_fine_led()
+        self._operate_cloud_led()
+        self._operate_rain_led()
+        self._operate_snow_led()
+
     @_exc_attr_err
     def _operate_fine_led(self):
         weather = self.forecast.get('weather')
