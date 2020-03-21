@@ -49,3 +49,18 @@ class PyTenki:
             self._leds.close()
         except AttributeError:
             pass
+
+    def _operate_fine_led(self):
+        try:
+            weather = self.forecast.get('weather')
+
+            if weather.startswith('晴'):
+                self._leds.fine.on()
+            elif 'のち晴' in weather:
+                self._leds.fine.pulse()
+            elif '時々晴' in weather:
+                self._leds.fine.blink()
+            else:
+                self._leds.fine.off()
+        except AttributeError:
+            pass
