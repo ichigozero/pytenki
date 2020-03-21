@@ -20,9 +20,9 @@ class PyTenki:
 
     def _normalize_weather_str(self):
         try:
-            strings = (('大', ''), ('暴風', ''), ('雷', ''),
-                       ('一時', '時々'), ('雨か雪', '雨'),
-                       ('雪か雨', '雪'))
+            strings = (('大', ''), ('暴風', ''),
+                       ('雷', ''), ('一時', '時々'),
+                       ('雨か雪', '雨'), ('雪か雨', '雪'))
 
             for before, after in strings:
                 tmp = self._forecast['weather']

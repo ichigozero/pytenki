@@ -1,12 +1,14 @@
 import pytest
 
 
-@pytest.mark.parametrize('weather,expected', [
+@pytest.mark.parametrize(
+    'weather,expected', [
         ('晴れ', '晴れ'), ('大雨', '雨'),
         ('暴風雨', '雨'), ('一時晴', '時々晴'),
         ('雨か雪', '雨'), ('雪か雨', '雪'),
         ('', '')
-    ])
+    ]
+)
 def test_normalize_weather_str(pytenki, weather, expected):
     pytenki._forecast = dict()
     pytenki._forecast['weather'] = weather
