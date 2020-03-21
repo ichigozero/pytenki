@@ -94,3 +94,18 @@ class PyTenki:
                 self._leds.rain.off()
         except AttributeError:
             pass
+
+    def _operate_snow_led(self):
+        try:
+            weather = self.forecast.get('weather')
+
+            if weather.startswith('雪'):
+                self._leds.snow.on()
+            elif 'のち雪' in weather:
+                self._leds.snow.pulse()
+            elif '時々雪' in weather:
+                self._leds.snow.blink()
+            else:
+                self._leds.snow.off()
+        except AttributeError:
+            pass
