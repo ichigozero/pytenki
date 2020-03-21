@@ -55,60 +55,69 @@ class PyTenki:
     def _close_leds(self):
         self._leds.close()
 
-    def operate_all_weather_leds(self):
-        self._operate_fine_led()
-        self._operate_cloud_led()
-        self._operate_rain_led()
-        self._operate_snow_led()
+    def operate_all_weather_leds(self, on_time=1, off_time=1,
+                                 fade_in_time=1, fade_out_time=1):
+        self._operate_fine_led(on_time, off_time,
+                               fade_in_time, fade_out_time)
+        self._operate_cloud_led(on_time, off_time,
+                                fade_in_time, fade_out_time)
+        self._operate_rain_led(on_time, off_time,
+                               fade_in_time, fade_out_time)
+        self._operate_snow_led(on_time, off_time,
+                               fade_in_time, fade_out_time)
 
     @_exc_attr_err
-    def _operate_fine_led(self):
+    def _operate_fine_led(self, on_time=1, off_time=1,
+                          fade_in_time=1, fade_out_time=1):
         weather = self.forecast.get('weather')
 
         if weather.startswith('晴'):
             self._leds.fine.on()
         elif 'のち晴' in weather:
-            self._leds.fine.pulse()
+            self._leds.fine.pulse(fade_in_time, fade_out_time)
         elif '時々晴' in weather:
-            self._leds.fine.blink()
+            self._leds.fine.blink(on_time, off_time)
         else:
             self._leds.fine.off()
 
     @_exc_attr_err
-    def _operate_cloud_led(self):
+    def _operate_cloud_led(self, on_time=1, off_time=1,
+                           fade_in_time=1, fade_out_time=1):
         weather = self.forecast.get('weather')
 
         if weather.startswith('曇'):
             self._leds.cloud.on()
         elif 'のち曇' in weather:
-            self._leds.cloud.pulse()
+            self._leds.cloud.pulse(fade_in_time, fade_out_time)
         elif '時々曇' in weather:
-            self._leds.cloud.blink()
+            self._leds.cloud.blink(on_time, off_time)
         else:
             self._leds.cloud.off()
 
     @_exc_attr_err
-    def _operate_rain_led(self):
+    def _operate_rain_led(self, on_time=1, off_time=1,
+                          fade_in_time=1, fade_out_time=1):
         weather = self.forecast.get('weather')
 
         if weather.startswith('雨'):
             self._leds.rain.on()
         elif 'のち雨' in weather:
-            self._leds.rain.pulse()
+            self._leds.rain.pulse(fade_in_time, fade_out_time)
         elif '時々雨' in weather:
-            self._leds.rain.blink()
+            self._leds.rain.blink(on_time, off_time)
         else:
             self._leds.rain.off()
 
     @_exc_attr_err
-    def _operate_snow_led(self):
+    def _operate_snow_led(self, on_time=1, off_time=1,
+                          fade_in_time=1, fade_out_time=1):
         weather = self.forecast.get('weather')
 
         if weather.startswith('雪'):
             self._leds.snow.on()
         elif 'のち雪' in weather:
-            self._leds.snow.pulse()
+            self._leds.snow.pulse(fade_in_time, fade_out_time)
         elif '時々雪' in weather:
-            self._leds.snow.blink()
+            self._leds.snow.blink(on_time, off_time)
         else:
             self._leds.snow.off()
