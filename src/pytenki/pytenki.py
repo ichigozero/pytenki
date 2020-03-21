@@ -1,7 +1,12 @@
+import subprocess
+
 from gpiozero import Button, LEDBoard
 from gpiozero.exc import GPIOPinMissing
 
 
+DIC_FPATH = '/var/lib/mecab/dic/open-jtalk/naist-jdic'
+VOICE_FPATH = '/usr/share/hts-voice/mei/mei_normal.htsvoice'
+SPEECH_FPATH = '/tmp/tts_ja_mei.wav'
 FCAST_WEATHER = '{day}の{city}の天気は{weather}。'
 FCAST_MAX_TEMP = '予想最高気温は{max_temp}。'
 FCAST_MIN_TEMP = '予想最低気温は{min_temp}。'
@@ -106,6 +111,31 @@ class PyTenki:
     @_exc_attr_err
     def _close_button(self):
         self._button.close()
+
+    @_exc_attr_err
+    def tts_forecast_summary_after_button_press(self):
+        self._button.when_pressed = self._tts_forecast_summary
+
+    def _tts_forecast_summary(self):
+        summary = self._compose_forecast_summary()
+
+        try:
+            p1 = subprocess.Popen(['echo', summary], stdout=subprocess.PIPE)
+            p2 = subprocess.Popen([
+                'open_jtalk',
+                '-x', DIC_FPATH,
+                '-m', VOICE_FPATH,
+                '-ow', SPEECH_FPATH
+            ], stdin=p1.stdout, stdout=subprocess.PIPE)
+
+            p1.stdout.close()
+            p2.communicate()
+            p2.wait()
+
+            subprocess.run(['aplay', '--quiet', SPEECH_FPATH])
+            subprocess.run(['rm', '-f', SPEECH_FPATH])
+        except OSError:
+            pass
 
     def operate_all_weather_leds(self, on_time=1, off_time=1,
                                  fade_in_time=1, fade_out_time=1):
