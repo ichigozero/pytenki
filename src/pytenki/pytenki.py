@@ -98,9 +98,14 @@ class PyTenki:
 
     def assign_button(self, button_pin):
         try:
+            self._close_button()
             self._button = Button(button_pin)
         except GPIOPinMissing:
             pass
+
+    @_exc_attr_err
+    def _close_button(self):
+        self._button.close()
 
     def operate_all_weather_leds(self, on_time=1, off_time=1,
                                  fade_in_time=1, fade_out_time=1):
