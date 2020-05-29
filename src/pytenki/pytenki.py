@@ -1,7 +1,7 @@
 import subprocess
 
 from gpiozero import Button, LEDBoard
-from gpiozero.exc import GPIOPinMissing
+from gpiozero.exc import GPIOPinMissing, PinInvalidPin
 
 
 DIC_FPATH = '/var/lib/mecab/dic/open-jtalk/naist-jdic'
@@ -89,13 +89,16 @@ class PyTenki:
     def assign_leds(self, led_pins):
         self._close_leds()
 
-        self._leds = LEDBoard(
-            fine=led_pins.get('fine'),
-            cloud=led_pins.get('cloud'),
-            rain=led_pins.get('rain'),
-            snow=led_pins.get('snow'),
-            pwm=True,
-        )
+        try:
+            self._leds = LEDBoard(
+                fine=led_pins.get('fine'),
+                cloud=led_pins.get('cloud'),
+                rain=led_pins.get('rain'),
+                snow=led_pins.get('snow'),
+                pwm=True,
+            )
+        except PinInvalidPin:
+            pass
 
     @_exc_attr_err
     def _close_leds(self):
@@ -105,7 +108,7 @@ class PyTenki:
         try:
             self._close_button()
             self._button = Button(button_pin)
-        except GPIOPinMissing:
+        except (GPIOPinMissing, PinInvalidPin):
             pass
 
     @_exc_attr_err
